@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calcul Total Boissons et Pâtisseries</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .item-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .item-row input[type="number"] {
+      width: 80px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container my-5">
+    <h1 class="text-center mb-4">Calcul Total</h1>
+
+    <!-- Boissons -->
+    <h3>Boissons</h3>
+    <div id="boissons" class="mb-4">
+      <div class="item-row">
+        <input type="checkbox" class="boisson" data-price="5" id="the">
+        <label for="the" class="ms-2">Thé - 5 DH</label>
+        <input type="number" class="quantiteBoisson form-control ms-3" placeholder="Quantité" min="0" value="0">
+      </div>
+      <div class="item-row">
+        <input type="checkbox" class="boisson" data-price="7" id="cafe">
+        <label for="cafe" class="ms-2">Café - 7 DH</label>
+        <input type="number" class="quantiteBoisson form-control ms-3" placeholder="Quantité" min="0" value="0">
+      </div>
+      <div class="item-row">
+        <input type="checkbox" class="boisson" data-price="10" id="jus">
+        <label for="jus" class="ms-2">Jus d'orange - 10 DH</label>
+        <input type="number" class="quantiteBoisson form-control ms-3" placeholder="Quantité" min="0" value="0">
+      </div>
+    </div>
+
+    <!-- Pâtisseries -->
+    <h3>Pâtisseries</h3>
+    <div id="patisseries" class="mb-4">
+      <div class="item-row">
+        <input type="checkbox" class="patisserie" data-price="15" id="chebakia">
+        <label for="chebakia" class="ms-2">Chebakia - 15 DH</label>
+        <input type="number" class="quantitePatisserie form-control ms-3" placeholder="Quantité" min="0" value="0">
+      </div>
+      <div class="item-row">
+        <input type="checkbox" class="patisserie" data-price="12" id="ghriba">
+        <label for="ghriba" class="ms-2">Ghriba - 12 DH</label>
+        <input type="number" class="quantitePatisserie form-control ms-3" placeholder="Quantité" min="0" value="0">
+      </div>
+      <div class="item-row">
+        <input type="checkbox" class="patisserie" value="20" id="cornes">
+        <label for="cornes" class="ms-2">Cornes de gazelle - 20 DH</label>
+        <input type="number" class="quantitePatisserie form-control ms-3" placeholder="Quantité" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button id="calculer" class="btn btn-primary">Calculer le total</button>
+    </div>
+
+    <h3 class="text-center mt-4">Total : <span id="total">0</span> DH</h3>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('calculer').addEventListener('click', () => {
+      let total = 0;
+
+      // Boissons
+       let allbsCh=document.querySelectorAll('.boisson');
+        let allQtBs=document.querySelectorAll('.quantitePatisserie');
+        
+        let totalBoisson=0;
+       allbsCh.forEach(function(b,pos){
+        totalBoisson+=b.value*allQtBs[pos].value;
+       })
+      // Pâtisseries
+      const patisseries = document.querySelectorAll('.patisserie');
+      const quantitesPatisserie = document.querySelectorAll('.quantitePatisserie');
+      patisseries.forEach((patisserie, index) => {
+        if (patisserie.checked) {
+          const prix = parseFloat(patisserie.dataset.price) || 0;
+          const quantite = parseInt(quantitesPatisserie[index].value) || 0;
+          total += prix * quantite;
+        }
+      });
+
+      document.getElementById('total').textContent = total.toFixed(2);
+    });
+  </script>
+</body>
+</html>

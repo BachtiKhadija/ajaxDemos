@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste d'achat avec remises</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Liste d'achat</h1>
+
+    <h2>Produits :</h2>
+    <ul id="product-list">
+      <li><input type="checkbox" class="product" data-price="10"> Pain - 10</li>
+      <li><input type="checkbox" class="product" data-price="20"> Lait - 20</li>
+      <li><input type="checkbox" class="product" data-price="15"> Fromage - 15</li>
+      <li><input type="checkbox" class="product" data-price="25"> Fruits - 25</li>
+      <li><input type="checkbox" class="product" data-price="30"> Viande - 30</li>
+    </ul>
+
+    <h2>Catégorie de remise :</h2>
+    <div>
+      <input type="radio" name="discount" value="0" id="none" checked>
+      <label for="none">Aucune remise</label><br>
+
+      <input type="radio" name="discount" value="10" id="student">
+      <label for="student">Étudiant - 10%</label><br>
+
+      <input type="radio" name="discount" value="20" id="vip">
+      <label for="vip">VIP - 20%</label>
+    </div>
+
+    <button id="calculate">Calculer le prix total</button>
+
+    <h2>Total : <span id="total">0</span> </h2>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
