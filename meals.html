@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Finder (Saisie dynamique)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-4">
+  <h1 class="text-center mb-4">Trouver un repas</h1>
+  
+  <div class="card p-3 mb-4">
+    <h5>Saisir vos ingrédients :</h5>
+
+    <div id="listIngredients"></div>
+
+    <div class="mt-2">
+      <button class="btn btn-secondary btn-sm" onclick="ajouterIngr()">+ Ajouter ingrédient</button>
+      <button class="btn btn-danger btn-sm" onclick="supprimerIngr()">- Supprimer</button>
+    </div>
+
+    <button class="btn btn-primary mt-3" onclick="getMeals()">Rechercher</button>
+  </div>
+
+  <!-- Résultats -->
+  <div class="row" id="mealsContainer"></div>
+
+  <!-- Détail affiché en bas -->
+  <div id="mealDetails" class="card mt-4 d-none">
+  
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let meals = [];
+
+// Charger JSON
+fetch('meals.json')
+  .then(res => res.json())
+  .then(data => {
+    meals = data;
+  });
+
+// Ajouter champ input
+function ajouterIngr() {
+  const container = document.querySelector('#listIngredients');
+
+  const div = document.createElement('div');
+  div.className = 'mb-3';
+
+  div.innerHTML = `
+    <input type="text" class="form-control ingredient" placeholder="Ex: tomate">
+  `;
+
+  container.appendChild(div);
+}
+
+// Supprimer champ
+function supprimerIngr() {
+  const container = document.querySelector('#listIngredients');
+  if (container.children.length > 0) {
+    //container.removeChild(container.lastChild);
+    container.lastChild.remove();
+
+  }
+}
+
+// Initialiser avec 1 champ par défaut
+ajouterIngr();
+
+// Filtrage
+function getMeals() {
+  const listIng = Array.from(document.querySelectorAll('.ingredient'));
+   selectedIngredients=listIng.map(input => input.value.toLowerCase().trim())
+    .filter(val => val !== '');
+  const container = document.getElementById('mealsContainer');
+  container.innerHTML = '';
+  const filtered = []; // tableau pour stocker les repas trouvés
+  for(let meal of meals){
+     let match=true;
+  for(let ing of selectedIngredients){
+           if(!meal.ingredients.includes(ing)){
+            match=false;
+            break;
+           }
+
+             }
+    if(match){
+    filtered.push(meal);
+    }
+    
+
+  
+  }
+  console.table(filtered);
+container.innerHTML='';
+  if (filtered.length === 0) {
+    container.innerHTML = '<p class="text-center">Aucun repas trouvé</p>';
+    return;
+  }
+
+  filtered.forEach(meal => {
+    const col = document.createElement('div');
+    col.className = 'col-md-4 mb-4';
+
+    col.innerHTML = `
+      <div class="card">
+        <img src="${meal.image}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">${meal.name}</h5>
+          <p class="card-text">${meal.ingredients.join()}</p>
+          <button class="btn btn-primary" onclick="showDetails(${meal.id})">Détail</button>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(col);
+  });
+}
+
+// Afficher détail dans div
+function showDetails(id) {
+  const meal = meals.find(m => m.id === id);
+
+  const box = document.querySelector('#mealDetails');
+  if(meal){
+     box.innerHTML=`<div class='card'>
+           <div class='card-body'>
+              <h2 class='card-title'>${meal.name}</h2>
+              <p class='card-text'><strong>Ingredients : </strong> ${meal.ingredients.join()}</p>
+               <p class='card-text'><strong>Steps : </strong> ${meal.steps}</p>
+
+        </div>`
+  }
+  box.classList.remove('d-none');
+ 
+
+}
+</script>
+
+</body>
+</html>
+

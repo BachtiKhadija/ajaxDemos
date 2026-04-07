@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Pizza",
+    "ingredients": ["farine", "tomate", "fromage"],
+    "image": "https://via.placeholder.com/300",
+    "steps": "Préparer la pâte, ajouter les ingrédients, cuire au four."
+  },
+  {
+    "id": 2,
+    "name": "Sandwich",
+    "ingredients": ["pain", "fromage", "tomate"],
+    "image": "https://via.placeholder.com/300",
+    "steps": "Assembler les ingrédients dans le pain."
+  }
+]

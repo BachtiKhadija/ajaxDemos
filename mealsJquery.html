@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Finder (jQuery simplifié)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-4">
+  <h1 class="text-center mb-4">🍽️ Trouver un repas</h1>
+
+  <div class="card p-3 mb-4">
+    <h5>Saisir vos ingrédients :</h5>
+    <div id="ingredientsInputs"></div>
+    <div class="mt-2">
+      <button class="btn btn-secondary btn-sm" id="addBtn">+ Ajouter ingrédient</button>
+      <button class="btn btn-danger btn-sm" id="removeBtn">- Supprimer</button>
+    </div>
+    <button class="btn btn-primary mt-3" id="searchBtn">Rechercher</button>
+  </div>
+
+  <div class="row" id="mealsContainer"></div>
+  <div id="mealDetailsBox" class="card mt-4 d-none">
+    <div class="card-body">
+      <h4 id="mealTitle"></h4>
+      <div id="mealDetails"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let meals = [];
+$.getJSON('meals.json', function(data) { meals = data; });
+
+function addIngredientInput(value = '') {
+  $('#ingredientsInputs').append(`
+    <div class="input-group mb-2">
+      <input type="text" class="form-control ingredient" placeholder="Ex: tomate" value="${value}">
+    </div>
+  `);
+}
+addIngredientInput();
+
+$('#addBtn').click(function() { addIngredientInput(); });
+$('#removeBtn').click(function() { $('#ingredientsInputs .input-group').last().remove(); });
+
+$('#searchBtn').click(function() {
+  let selectedIngredients = [];
+  $('.ingredient').each(function() {
+    let val = $(this).val().toLowerCase().trim();
+    if(val !== '') selectedIngredients.push(val);
+  });
+
+  $('#mealsContainer').html('');
+
+  const filtered = meals.filter(function(meal) {
+    let match = true;
+    for(let i = 0; i < selectedIngredients.length; i++) {
+      let ingredient = selectedIngredients[i];
+      let mealIngredients = [];
+      meal.ingredients.forEach(function(x){ mealIngredients.push(x.toLowerCase()); });
+      if(!mealIngredients.includes(ingredient)) { match = false; break; }
+    }
+    return match;
+  });
+
+  if(filtered.length === 0) { $('#mealsContainer').html('<p class="text-center">Aucun repas trouvé</p>'); return; }
+
+  filtered.forEach(function(meal){
+    $('#mealsContainer').append(`
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="${meal.image}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">${meal.name}</h5>
+            <p class="card-text">${meal.ingredients.join(', ')}</p>
+            <button class="btn btn-primary detailBtn" data-id="${meal.id}">Détail</button>
+          </div>
+        </div>
+      </div>
+    `);
+  });
+});
+
+$(document).on('click','.detailBtn',function(){
+  const id = $(this).data('id');
+  const meal = meals.find(m=>m.id===id);
+  $('#mealTitle').text(meal.name);
+  $('#mealDetails').html(`<p><strong>Ingrédients:</strong> ${meal.ingredients.join(', ')}</p><p><strong>Préparation:</strong></p><p>${meal.steps}</p>`);
+  $('#mealDetailsBox').removeClass('d-none');
+  $('html, body').animate({ scrollTop: $('#mealDetailsBox').offset().top }, 500);
+});
+</script>
+
+</body>
+</html>
