@@ -1,0 +1,18 @@
+[
+  {
+    "nom": "Pomme",
+    "origine": "France",
+    "calories": 52,
+    "saison": "Automne",
+    "fibres": "2.4g",
+    "vitamines": "Vitamine C"
+  },
+  {
+    "nom": "Carotte",
+    "origine": "Maroc",
+    "calories": 41,
+    "saison": "Hiver",
+    "fibres": "2.8g",
+    "vitamines": "Vitamine A"
+  }
+]
