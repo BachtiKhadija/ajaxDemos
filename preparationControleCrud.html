@@ -77,30 +77,31 @@ let editIndex = null;
 
 // ADD / UPDATE
 function saveStagiaire() {
-  let nom = document.getElementById("nom").value;
-  let photo = document.getElementById("photo").value;
-  let filiere = document.getElementById("filiere").value;
+  let nom = document.querySelector("#nom").value;
+  let photo = document.querySelector("#photo").value;//nullable
+  let filiere = document.querySelector("#filiere").value;
 
   if (!nom || !filiere) {
     alert("Nom et filière obligatoires");
     return;
   }
 
-  if (editIndex === null) {
+  if (editIndex === null) {//en mode ajout
     stagiaires.push({
       id: Date.now(),
-      nom,
+      nom:nom,
       photo,
       filiere
     });
   } else {
     stagiaires[editIndex] = {
       id: stagiaires[editIndex].id,
-      nom,
-      photo,
-      filiere
+      nom:nom,
+      photo:photo,
+      filiere:filiere
     };
-    editIndex = null;
+     //stagiaires[editIndex]={... stagiaires[editIndex],nom:nom,photo:photo,filiere:filiere};
+    editIndex = null;//revenir en mode add
   }
 
   clearForm();
@@ -115,10 +116,12 @@ function displayStagiaires() {
   let tbody = document.getElementById("tableBody");
   tbody.innerHTML = "";
 
-  stagiaires
-    .filter(s => s.nom.toLowerCase().includes(search))
-    .filter(s => filter === "" || s.filiere === filter)
-    .forEach((s, index) => {
+  let filtredData=stagiaires.filter(s => s.nom.toLowerCase().includes(search));
+  if(filter!==''){
+      filtredData=filtredData.filter(s=>s.filiere===filter);
+  }
+    
+    filtredData.forEach((s, index) => {
       tbody.innerHTML += `
         <tr>
           <td>${s.id}</td>
@@ -137,10 +140,10 @@ function displayStagiaires() {
 // EDIT
 function editStagiaire(index) {
   let s = stagiaires[index];
-  document.getElementById("stagiaireId").value = s.id;
-  document.getElementById("nom").value = s.nom;
-  document.getElementById("photo").value = s.photo;
-  document.getElementById("filiere").value = s.filiere;
+  document.querySelector("#stagiaireId").value = s.id;
+  document.querySelector("#nom").value = s.nom;
+  document.querySelector("#photo").value = s.photo;
+  document.querySelector("#filiere").value = s.filiere;
 
   editIndex = index;
 }
