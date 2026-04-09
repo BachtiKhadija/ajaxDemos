@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<input type="text" id="task" onchange="addTask(event)"><br>
+<ul id="tasks">
+
+
+
+</ul>
+
+<script type="text/javascript">
+    localStorage.clear();
+   let list=JSON.parse(localStorage.getItem('tasks'))||[];
+   const Render=()=>{
+      let ch='';
+      list.forEach((t,pos) => {
+   ch+=`<li><span onclick="toggleStatus(${pos})" 
+      "style"={text-decoration:${t.status=='en cours'?"line-through":'none'}}
+    >${t.text}</span> <button type="button" onclick="Supprimer(${pos})">delete</button>
+    <button type="button" onclick="Edit(${pos})">Edit</button></li>`
+      });
+      document.querySelector('#tasks').innerHTML=ch;
+   }
+     
+   //appeler render onload 
+   Render();
+    //setLocalstorage
+    const setLocalstorage=()=>{
+      localStorage.setItem('tasks',JSON.stringify(list));
+    }
+   
+   const addTask=(e)=>{
+           if(e.target.value.trim()==''){
+            alert('vous devez saisir une tâche !!!');
+            return;
+           }
+           list.push({id:Date.now(),text:e.target.value,status:'en cours'});
+            
+           
+           setLocalstorage();
+           Render();
+           e.target.value='';
+    }
+  const Supprimer=(pos)=>{
+
+    list.splice(pos,1);
+     setLocalstorage();
+
+     Render();
+  }
+
+
+  const Edit=(pos)=>{
+    let newText=prompt("modifier le text de la tâche");
+    if(newText.trim()=='')return;
+    list[pos].text=newText;
+     setLocalstorage();
+
+     Render();
+  }
+
+const toggleStatus=(pos)=>{
+    list[pos].status.toLowerCase()=='en cours'?'done':'en cours';
+    setLocalstorage();
+
+     Render();
+}
+</script>
+</body>
+</html>

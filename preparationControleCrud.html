@@ -120,7 +120,6 @@ function displayStagiaires() {
   if(filter!==''){
       filtredData=filtredData.filter(s=>s.filiere===filter);
   }
-    
     filtredData.forEach((s, index) => {
       tbody.innerHTML += `
         <tr>
@@ -145,7 +144,7 @@ function editStagiaire(index) {
   document.querySelector("#photo").value = s.photo;
   document.querySelector("#filiere").value = s.filiere;
 
-  editIndex = index;
+  editIndex = index;//activer edit
 }
 
 // DELETE
