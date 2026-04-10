@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Calcul Valeur Énergétique</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Calcul de la valeur énergétique d'un repas</h2>
+
+  <div id="listeAliments" class="mb-4"></div>
+
+  <button class="btn btn-primary w-100" onclick="calculer()">Calculer</button>
+
+  <div id="resultat" class="mt-4 alert alert-info d-none"></div>
+</div>
+
+<script>
+// Liste des aliments (kcal pour 100g)
+const aliments = [
+  { nom: "Riz", kcal: 130 },
+  { nom: "Poulet", kcal: 165 },
+  { nom: "Pomme", kcal: 52 },
+  { nom: "Pain", kcal: 265 },
+  { nom: "Fromage", kcal: 402 }
+];
+
+// Générer la liste
+const container = document.getElementById("listeAliments");
+
+aliments.forEach((aliment, index) => {
+  container.innerHTML += `
+    <div class="row mb-2 align-items-center">
+      <div class="col-1">
+        <input type="checkbox" id="check${index}">
+      </div>
+      <div class="col-5">
+        <label for="check${index}">
+          ${aliment.nom} (${aliment.kcal} kcal / 100g)
+        </label>
+      </div>
+      <div class="col-6">
+        <input type="number" id="quantite${index}" class="form-control" placeholder="Quantité en g">
+      </div>
+    </div>
+  `;
+});
+
+function calculer() {
+  let total = 0;
+
+  aliments.forEach((aliment, index) => {
+    const checked = document.getElementById(`check${index}`).checked;
+    const quantite = parseFloat(document.getElementById(`quantite${index}`).value);
+
+    if (checked && quantite > 0) {
+      total += (aliment.kcal * quantite) / 100;
+    }
+  });
+
+  // Interprétation
+  let interpretation = "";
+  if (total < 500) {
+    interpretation = "Repas léger";
+  } else if (total < 800) {
+    interpretation = "Repas équilibré";
+  } else {
+    interpretation = "Repas riche en calories";
+  }
+
+  const resultatDiv = document.getElementById("resultat");
+  resultatDiv.classList.remove("d-none");
+  resultatDiv.innerHTML = `
+    <strong>Total :</strong> ${total.toFixed(2)} kcal <br>
+    <strong>Interprétation :</strong> ${interpretation}
+  `;
+}
+</script>
+
+</body>
+</html>

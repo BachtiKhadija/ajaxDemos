@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <ul>
+        <li class="active">Lorem.</li>
+        <li>Aspernatur.</li>
+        <li>Illo.</li>
+        <li>Rem.</li>
+        <li>Quibusdam.</li>
+        <li>Cum.</li>
+        <li>Optio.</li>
+        <li>Id.</li>
+        <li class="active">Obcaecati?</li>
+        <li>Laborum.</li>
+    </ul>
+
+
+
+    <script type="text/javascript">
+      //$('li').filter($('.active')).css({textDecoration:'line-through',fontSize:'28px'});
+      $('li').not($('.active')).css({textDecoration:'line-through',fontSize:'28px'});
+
+
+
+
+    </script>
+</body>
+</html>
