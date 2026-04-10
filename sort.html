@@ -13,7 +13,16 @@
 
     <script type="text/javascript">
          let numbers=[15,10,6,50,25];
-         let res=numbers.sort(function(a,b){return a-b;});
+         let resAsc=numbers.sort((a,b)=> a-b);
+         /*
+            a-b <0    a suivi de b
+            a -b >0   b suivi de a 
+
+         */
+        console.log(`numbers =>${numbers}`);
+         console.log(`resAsc =>${resAsc}`);
+        let resDesc=numbers.sort((a,b)=> b-a);
+      
          console.log(`numbers =>${numbers}`);
          console.log(`res =>${res}`);
 
